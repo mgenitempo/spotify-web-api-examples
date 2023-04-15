@@ -7,7 +7,7 @@
  * https://developer.spotify.com/web-api/authorization-guide/#client_credentials_flow
  */
 
-var request = require('request'); // "Request" library
+var request = require("request"); // "Request" library
 
 /* var client_id = 'CLIENT_ID'; // Your client id
  * var client_secret = 'CLIENT_SECRET'; // Your secret
@@ -27,8 +27,18 @@ var authOptions = {
   json: true
 };
 
-request.post(authOptions, function(error, response, body) {
+request.post(authOptions, function (error, response, body) {
   if (!error && response.statusCode === 200) {
-    var token = body.access_token;
+
+    // use the access token to access the Spotify Web API
+    var access_token = body.access_token;
+    var options = {
+      url: 'https://api.spotify.com/v1/me',
+      headers: { 'Authorization': 'Bearer ' + access_token },
+      json: true
+    };
+    request.get(options, function (error, response, body) {
+      console.log(body);
+    });
   }
 });
